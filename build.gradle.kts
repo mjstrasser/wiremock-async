@@ -14,6 +14,7 @@ dependencies {
     val wiremockVersion = "2.27.1"
     val jacksonModuleVersion = "2.11.1"
     val okhttpVersion = "4.8.0"
+    val kotlinLoggingVersion = "1.7.9"
     val junit5Version = "5.6.0"
     val spekVersion = "2.0.9"
     val assertkVersion = "0.22"
@@ -26,6 +27,8 @@ dependencies {
     implementation(group = "com.github.tomakehurst", name = "wiremock-standalone", version = wiremockVersion)
     implementation(group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version = jacksonModuleVersion)
     implementation(group = "com.squareup.okhttp3", name = "okhttp", version = okhttpVersion)
+    implementation(group = "io.github.microutils", name = "kotlin-logging", version = kotlinLoggingVersion)
+
 
     testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = junit5Version)
     testRuntimeOnly(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = junit5Version)

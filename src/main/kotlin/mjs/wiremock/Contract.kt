@@ -1,7 +1,6 @@
 package mjs.wiremock
 
 import java.time.Instant
-import java.util.*
 
 data class ContractRequest(
         val correlationId: String,
@@ -12,7 +11,7 @@ data class ContractRequest(
 )
 
 data class ContractResponse(
-        val correlationId: String = UUID.randomUUID().toString(),
+        val correlationId: String,
         val message: String,
         val timestamp: String = Instant.now().toString()
 )

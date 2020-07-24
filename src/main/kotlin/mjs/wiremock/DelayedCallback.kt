@@ -9,6 +9,7 @@ import com.github.tomakehurst.wiremock.http.HttpHeader
 import com.github.tomakehurst.wiremock.http.HttpHeaders
 import com.github.tomakehurst.wiremock.http.Request
 import com.github.tomakehurst.wiremock.http.Response
+import mu.KotlinLogging
 import java.lang.Math.exp
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
@@ -17,6 +18,8 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.roundToLong
 
 class DelayedCallback : ResponseTransformer() {
+
+    private val logger = KotlinLogging.logger {}
 
     companion object {
         @JvmStatic
@@ -31,8 +34,9 @@ class DelayedCallback : ResponseTransformer() {
     override fun transform(request: Request, response: Response, files: FileSource, parameters: Parameters): Response {
         val context = CallbackContext(objectMapper.readValue(request.bodyAsString))
         val delayMillis = callbackDelayMillis(parameters)
+        logger.info("Callback will be made after $delayMillis milliseconds")
 
-        executor.schedule({ callback(context, delayMillis) }, delayMillis, TimeUnit.MILLISECONDS)
+        executor.schedule({ callback(context) }, delayMillis, TimeUnit.MILLISECONDS)
 
         val result = ContractResponse(
                 context.callbackId,
