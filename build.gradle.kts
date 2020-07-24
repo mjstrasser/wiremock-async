@@ -12,6 +12,8 @@ repositories {
 dependencies {
     val kotlinVersion = "1.3.72"
     val wiremockVersion = "2.27.1"
+    val jacksonModuleVersion = "2.11.1"
+    val okhttpVersion = "4.8.0"
     val junit5Version = "5.6.0"
     val spekVersion = "2.0.9"
     val assertkVersion = "0.22"
@@ -21,7 +23,9 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation(group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version = kotlinVersion)
 
-    implementation(group= "com.github.tomakehurst", name= "wiremock-standalone", version= wiremockVersion)
+    implementation(group = "com.github.tomakehurst", name = "wiremock-standalone", version = wiremockVersion)
+    implementation(group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version = jacksonModuleVersion)
+    implementation(group = "com.squareup.okhttp3", name = "okhttp", version = okhttpVersion)
 
     testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = junit5Version)
     testRuntimeOnly(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = junit5Version)
