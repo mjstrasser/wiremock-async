@@ -10,11 +10,11 @@ import com.github.tomakehurst.wiremock.http.HttpHeaders
 import com.github.tomakehurst.wiremock.http.Request
 import com.github.tomakehurst.wiremock.http.Response
 import mu.KotlinLogging
-import java.lang.Math.exp
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.TimeUnit
+import kotlin.math.exp
 import kotlin.math.roundToLong
 
 class DelayedCallback : ResponseTransformer() {
@@ -51,8 +51,8 @@ class DelayedCallback : ResponseTransformer() {
 
     private fun callbackDelayMillis(parameters: Parameters?) =
             parameters?.let {
-                val median = it.getValueOrDefault("median", 1000).toDouble()
-                val sigma = it.getValueOrDefault("sigma", 0.1)
+                val median = it.getDoubleValue("median", 1000.0)
+                val sigma = it.getDoubleValue("sigma", 0.1)
                 randomLogNormal(median, sigma)
             } ?: 0L
 
@@ -60,10 +60,11 @@ class DelayedCallback : ResponseTransformer() {
             (exp(ThreadLocalRandom.current().nextGaussian() * sigma) * median).roundToLong()
 }
 
-/**
- * Get the value from a [Parameters] object if present, otherwise the specified default.
- */
-inline fun <reified T> Parameters.getValueOrDefault(key: String, default: T) = when (val value = getValue(key)) {
-    is T -> value
-    else -> default
-}
+fun Parameters.getDoubleValue(key: String, default: Double) =
+        if (key in this)
+            when (val value = get(key)) {
+                is Double -> value
+                is Int -> value.toDouble()
+                else -> default
+            }
+        else default
