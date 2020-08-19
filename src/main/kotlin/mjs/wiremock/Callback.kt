@@ -1,16 +1,16 @@
 package mjs.wiremock
 
+import com.benasher44.uuid.uuid4
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import mu.KotlinLogging
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import java.util.*
 
 val objectMapper = jacksonObjectMapper()
 
-data class CallbackContext(val request: ContractRequest, val callbackId: String = UUID.randomUUID().toString())
+data class CallbackContext(val request: ContractRequest, val callbackId: String = uuid4().toString())
 
 private val logger = KotlinLogging.logger {}
 

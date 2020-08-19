@@ -60,11 +60,10 @@ class DelayedCallback : ResponseTransformer() {
             (exp(ThreadLocalRandom.current().nextGaussian() * sigma) * median).roundToLong()
 }
 
-fun Parameters.getDoubleValue(key: String, default: Double) =
-        if (key in this)
-            when (val value = get(key)) {
-                is Double -> value
-                is Int -> value.toDouble()
-                else -> default
-            }
-        else default
+fun Parameters.getDoubleValue(key: String, default: Double) = if (key in this)
+    when (val value = get(key)) {
+        is Double -> value
+        is Int -> value.toDouble()
+        else -> default
+    }
+else default
