@@ -41,4 +41,4 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - name: Build and test with Gradle under Batect
-        run: ./batect --permanently-enable-telemetry build-gradle
+        run: ./batect build-gradle
