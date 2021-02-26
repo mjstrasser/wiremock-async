@@ -36,7 +36,7 @@ class DelayedCallback : ResponseTransformer() {
         val delayMillis = callbackDelayMillis(parameters)
         logger.info("Callback will be made after $delayMillis milliseconds")
 
-        executor.schedule({ callback(context) }, delayMillis, TimeUnit.MILLISECONDS)
+        executor.schedule({ context.callback() }, delayMillis, TimeUnit.MILLISECONDS)
 
         val result = ContractResponse(
                 context.callbackId,
@@ -59,11 +59,3 @@ class DelayedCallback : ResponseTransformer() {
     private fun randomLogNormal(median: Double, sigma: Double) =
             (exp(ThreadLocalRandom.current().nextGaussian() * sigma) * median).roundToLong()
 }
-
-fun Parameters.getDoubleValue(key: String, default: Double) = if (key in this)
-    when (val value = get(key)) {
-        is Double -> value
-        is Int -> value.toDouble()
-        else -> default
-    }
-else default
