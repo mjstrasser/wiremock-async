@@ -32,30 +32,33 @@ class DelayedCallback : ResponseTransformer() {
     override fun applyGlobally() = false
 
     override fun transform(request: Request, response: Response, files: FileSource, parameters: Parameters): Response {
-        val context = CallbackContext(objectMapper.readValue(request.bodyAsString))
+
+        val contractRequest = objectMapper.readValue<ContractRequest>(request.bodyAsString)
+        val context = CallbackContext(contractRequest)
+
         val delayMillis = callbackDelayMillis(parameters)
-        logger.info("Callback will be made after $delayMillis milliseconds")
+        logger.info("Callback will be made after $delayMillis ms")
 
         executor.schedule({ context.callback() }, delayMillis, TimeUnit.MILLISECONDS)
 
         val result = ContractResponse(
-                context.callbackId,
-                "Acknowledged the request. Will call back after $delayMillis milliseconds"
+            context.callbackId,
+            "Acknowledged the request. Will call back after $delayMillis ms"
         )
         return Response.Builder.like(response)
-                .status(200)
-                .body(objectMapper.writeValueAsString(result))
-                .headers(HttpHeaders(HttpHeader.httpHeader("Content-Type", "application/json")))
-                .build()
+            .status(200)
+            .body(objectMapper.writeValueAsString(result))
+            .headers(HttpHeaders(HttpHeader.httpHeader("Content-Type", "application/json")))
+            .build()
     }
 
     private fun callbackDelayMillis(parameters: Parameters?) =
-            parameters?.let {
-                val median = it.getDoubleValue("median", 1000.0)
-                val sigma = it.getDoubleValue("sigma", 0.1)
-                randomLogNormal(median, sigma)
-            } ?: 0L
+        parameters?.let {
+            val median = it.getDoubleValue("median", 1000.0)
+            val sigma = it.getDoubleValue("sigma", 0.1)
+            randomLogNormal(median, sigma)
+        } ?: 0L
 
     private fun randomLogNormal(median: Double, sigma: Double) =
-            (exp(ThreadLocalRandom.current().nextGaussian() * sigma) * median).roundToLong()
+        (exp(ThreadLocalRandom.current().nextGaussian() * sigma) * median).roundToLong()
 }
