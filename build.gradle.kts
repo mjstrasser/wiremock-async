@@ -1,8 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.4.31"
+    kotlin("jvm") version "1.4.31"
 }
 
 repositories {
@@ -10,12 +9,12 @@ repositories {
     mavenCentral()
 }
 
-val kotlinVersion = "1.4.31"
-val wiremockVersion = "2.27.2"
-val jacksonModuleVersion = "2.12.1"
-val okhttpVersion = "4.9.1"
-val kotlinLoggingVersion = "2.0.4"
-val kotestVersion = "4.4.1"
+val kotlinVersion: String by project
+val wiremockVersion: String by project
+val jacksonModuleVersion: String by project
+val okhttpVersion: String by project
+val kotlinLoggingVersion: String by project
+val kotestVersion: String by project
 
 dependencies {
 
