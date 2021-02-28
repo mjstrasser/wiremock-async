@@ -7,7 +7,7 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 
 class ParametersTest : DescribeSpec({
     describe("Parameters getDoubleValue extension function") {
-        it("returns the default value if no value is found for the key") {
+        it("returns the default if no value is found for the key") {
             val parameters = Parameters()
             val default = 500.0
             parameters.getDoubleValue("median", default) shouldBe default
@@ -23,6 +23,17 @@ class ParametersTest : DescribeSpec({
             val median = parameters.getDoubleValue("median", 2000.0)
             median.shouldBeInstanceOf<Double>()
             median shouldBe 1000.0
+        }
+        it("returns the value for the key if a string value can be parsed as Double") {
+            val parameters = Parameters().also { it["median"] = "1000.0" }
+            val median = parameters.getDoubleValue("median", 2000.0)
+            median.shouldBeInstanceOf<Double>()
+            median shouldBe 1000.0
+        }
+        it("returns the default if a string value cannot be parsed as Double") {
+            val parameters = Parameters().also { it["median"] = "Not a double" }
+            val default = 1500.0
+            parameters.getDoubleValue("median", default) shouldBe default
         }
     }
 })
