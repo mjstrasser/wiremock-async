@@ -56,9 +56,9 @@ class DelayedCallback : ResponseTransformer() {
         parameters?.let {
             val median = it.getDoubleValue("median", 1000.0)
             val sigma = it.getDoubleValue("sigma", 0.1)
-            randomLogNormal(median, sigma)
+            randomLogNormalMillis(median, sigma)
         } ?: 0L
 
-    private fun randomLogNormal(median: Double, sigma: Double) =
+    private fun randomLogNormalMillis(median: Double, sigma: Double) =
         (exp(ThreadLocalRandom.current().nextGaussian() * sigma) * median).roundToLong()
 }
