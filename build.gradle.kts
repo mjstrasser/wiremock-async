@@ -31,6 +31,26 @@ dependencies {
     testImplementation("io.kotest:kotest-property:$kotestVersion")
 }
 
+sourceSets {
+    create("callbackTest") {
+        kotlin {
+            compileClasspath += main.get().output + configurations.testRuntimeClasspath
+            runtimeClasspath += output + compileClasspath
+        }
+    }
+}
+
+val callbackTest = task<Test>("callbackTest") {
+    description = "Runs the CallbackTest tests"
+    group = "verification"
+    testClassesDirs = sourceSets["callbackTest"].output.classesDirs
+    classpath = sourceSets["callbackTest"].runtimeClasspath
+}
+
+tasks.check {
+    dependsOn(callbackTest)
+}
+
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.jvmTarget = "11"
 }
