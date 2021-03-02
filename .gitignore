@@ -2,6 +2,6 @@
 .gradle-cache
 build
 target
-
+*.log
 .idea
 .batect/caches
