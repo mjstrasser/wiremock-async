@@ -33,7 +33,15 @@ class DelayedCallback : ResponseTransformer() {
 
     override fun transform(request: Request, response: Response, files: FileSource, parameters: Parameters): Response {
 
-        val contractRequest = objectMapper.readValue<ContractRequest>(request.bodyAsString)
+        val contractRequest = try {
+            objectMapper.readValue<ContractRequest>(request.bodyAsString)
+        } catch (ex: Exception) {
+            logger.error("Exception reading contract request", ex)
+            return Response.Builder.like(response)
+                .status(400)
+                .body(ex.message)
+                .build()
+        }
         val context = CallbackContext(contractRequest)
 
         val delayMillis = callbackDelayMillis(parameters)
@@ -57,7 +65,7 @@ class DelayedCallback : ResponseTransformer() {
             val median = it.getDoubleValue("median", 1000.0)
             val sigma = it.getDoubleValue("sigma", 0.1)
             randomLogNormalMillis(median, sigma)
-        } ?: 0L
+        } ?: 1000L
 
     private fun randomLogNormalMillis(median: Double, sigma: Double) =
         (exp(ThreadLocalRandom.current().nextGaussian() * sigma) * median).roundToLong()

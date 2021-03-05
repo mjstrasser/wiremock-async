@@ -15,6 +15,7 @@ val jacksonModuleVersion: String by project
 val okhttpVersion: String by project
 val kotlinLoggingVersion: String by project
 val kotestVersion: String by project
+val logbackVersion: String by project
 
 dependencies {
 
@@ -25,6 +26,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonModuleVersion")
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
