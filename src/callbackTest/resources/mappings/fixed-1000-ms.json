@@ -4,7 +4,6 @@
     "url": "/fixed-1000"
   },
   "response": {
-    "status": 200,
     "transformers": [
       "DelayedCallback"
     ],
