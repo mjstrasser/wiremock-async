@@ -40,15 +40,23 @@ sourceSets {
     }
 }
 
+tasks.register<Jar>("uberJar") {
+    archiveClassifier.set("uber")
+
+    from(sourceSets.main.get().output)
+
+    dependsOn(configurations.runtimeClasspath)
+    from({
+        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+    })
+}
+
 val callbackTest = task<Test>("callbackTest") {
     description = "Runs the CallbackTest tests"
     group = "verification"
     testClassesDirs = sourceSets["callbackTest"].output.classesDirs
     classpath = sourceSets["callbackTest"].runtimeClasspath
-}
-
-tasks.check {
-    dependsOn(callbackTest)
+    useJUnitPlatform()
 }
 
 tasks.withType<KotlinCompile>().configureEach {

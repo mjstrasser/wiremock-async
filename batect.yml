@@ -5,9 +5,32 @@ include:
     repo: https://github.com/batect/java-bundle.git
     ref: 0.1.0
 
+containers:
+  wiremock:
+    build_directory: .
+    ports:
+      - local: 8080
+        container: 8080
+
 tasks:
   build:
     description: Build and test with Gradle
     run:
       container: java-build-env
       command: ./gradlew build
+
+  uberJar:
+    description: Build the Uber JAR including dependencies
+    run:
+      container: java-build-env
+      command: ./gradlew uberJar
+
+  callbackTest:
+    description: Run the callback test against a running container
+    prerequisites:
+      - uberJar
+    dependencies:
+      - wiremock
+    run:
+      container: java-build-env
+      command: ./gradlew callbackTest

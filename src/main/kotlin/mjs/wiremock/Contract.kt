@@ -6,7 +6,6 @@ data class ContractRequest(
     val correlationId: String,
     val payload: String,
     val callbackUrl: String,
-    val timestamp: String,
 )
 
 data class ContractResponse(

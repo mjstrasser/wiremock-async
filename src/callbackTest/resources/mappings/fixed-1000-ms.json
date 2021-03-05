@@ -7,6 +7,10 @@
     "status": 200,
     "transformers": [
       "DelayedCallback"
-    ]
+    ],
+    "transformerParameters": {
+      "median": 1000,
+      "sigma": 0.0
+    }
   }
 }
