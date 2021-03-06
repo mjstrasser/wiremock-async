@@ -42,16 +42,15 @@ class DelayedCallback : ResponseTransformer() {
                 .body(ex.message)
                 .build()
         }
-        val context = CallbackContext(contractRequest)
 
         val delayMillis = callbackDelayMillis(parameters)
         logger.info("Callback will be made after $delayMillis ms")
 
-        executor.schedule({ context.callback() }, delayMillis, TimeUnit.MILLISECONDS)
+        executor.schedule({ contractRequest.callback() }, delayMillis, TimeUnit.MILLISECONDS)
 
         val result = ContractResponse(
-            context.callbackId,
-            "Acknowledged the request. Will call back after $delayMillis ms"
+            contractRequest.correlationId,
+            "Acknowledged the request. Will call back after $delayMillis ms",
         )
         return Response.Builder.like(response)
             .status(200)
