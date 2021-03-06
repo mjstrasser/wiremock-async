@@ -28,7 +28,7 @@ const val CALLBACK_SERVER = "java-build-env"
 const val CALLBACK_PORT = 8090
 
 /**
- * External test of the WireMock [DelayedCallback] extension.
+ * Functional test of the WireMock [DelayedCallback] extension.
  *
  * It is designed to be run by the Batect `callbackTest` task, where
  * WireMock runs in a container called `wiremock` and this test runs
@@ -38,7 +38,7 @@ const val CALLBACK_PORT = 8090
  */
 @ExperimentalTime
 @Suppress("BlockingMethodInNonBlockingContext") // Does not matter in these tests
-class CallbackTest : DescribeSpec({
+class DelayedCallbackTest : DescribeSpec({
 
     val objectMapper = jacksonObjectMapper()
     val okClient = OkHttpClient()
